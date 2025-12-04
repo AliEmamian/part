@@ -2,16 +2,21 @@
 
 interface CapacitySliderProps {
   capacity: number;
+  initialCapacity: number;
   onCapacityChange: (capacity: number) => void;
 }
 
 export default function CapacitySlider({
   capacity,
+  initialCapacity,
   onCapacityChange,
 }: CapacitySliderProps) {
   const minCapacity = 0;
   const maxCapacity = 3000;
   const percentage = ((capacity - minCapacity) / (maxCapacity - minCapacity)) * 100;
+  const changePercentage = initialCapacity > 0 
+    ? ((capacity - initialCapacity) / initialCapacity) * 100 
+    : 0;
 
   return (
     <div className="group rounded-xl bg-gradient-to-br from-white to-blue-50 p-6 shadow-lg transition-all duration-300 hover:shadow-xl dark:from-slate-800 dark:to-slate-900">
@@ -26,10 +31,24 @@ export default function CapacitySlider({
             ظرفیت تولید ماهانه
           </h3>
         </div>
-        <div className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-2 shadow-md">
-          <span className="text-2xl font-bold text-white">
-            {capacity.toLocaleString('en-US')} تن
-          </span>
+        <div className="flex items-center gap-3">
+          <div className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-2 shadow-md">
+            <span className="text-2xl font-bold text-white">
+              {capacity.toLocaleString('en-US')} تن
+            </span>
+          </div>
+          {changePercentage !== 0 && (
+            <span
+              className={`text-lg font-semibold ${
+                changePercentage > 0
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
+              }`}
+            >
+              {changePercentage > 0 ? '+' : ''}
+              {changePercentage.toFixed(1)}%
+            </span>
+          )}
         </div>
       </div>
       <div className="relative">

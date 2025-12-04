@@ -100,6 +100,7 @@ export default function Home() {
         <div className="mb-8">
           <CapacitySlider
             capacity={selectedCapacity}
+            initialCapacity={initialCapacity}
             onCapacityChange={handleCapacityChange}
           />
         </div>
