@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# داشبورد تحلیل فروکروم جغتای
 
-## Getting Started
+یک داشبورد تعاملی برای تحلیل داده‌های مالی و تولیدی بر اساس Sheet 5 فایل اکسل.
 
-First, run the development server:
+## ویژگی‌ها
+
+- 📊 نمودارهای تعاملی با Recharts
+- 📈 نمایش درآمدها بر اساس ظرفیت تولید
+- 💰 نمایش سود و زیان
+- 📉 تجزیه هزینه‌ها به صورت نمودار دایره‌ای
+- 📋 جدول داده‌های کامل
+- 🎨 UI مدرن و زیبا با Tailwind CSS
+- 🌙 پشتیبانی از حالت تاریک
+- 🇮🇷 پشتیبانی کامل از فارسی
+
+## نصب و راه‌اندازی
 
 ```bash
+# نصب وابستگی‌ها
+npm install
+
+# اجرای پروژه در حالت توسعه
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# ساخت برای تولید
+npm run build
+
+# اجرای نسخه تولید
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+پس از اجرا، پروژه در آدرس [http://localhost:3000](http://localhost:3000) در دسترس خواهد بود.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ساختار پروژه
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+dashboard/
+├── app/
+│   ├── layout.tsx      # Layout اصلی با فونت فارسی
+│   ├── page.tsx        # صفحه اصلی
+│   └── globals.css     # استایل‌های全局
+├── components/
+│   ├── InputControls.tsx          # کنترل‌های ورودی
+│   ├── RevenueChart.tsx           # نمودار درآمدها
+│   ├── ProfitChart.tsx            # نمودار سود
+│   ├── CostBreakdownChart.tsx     # نمودار تجزیه هزینه‌ها
+│   └── DataTable.tsx              # جدول داده‌ها
+└── public/
+    └── data.json                  # داده‌های Sheet 5
+```
 
-## Learn More
+## استفاده
 
-To learn more about Next.js, take a look at the following resources:
+1. از منوی کشویی، ظرفیت تولید مورد نظر را انتخاب کنید
+2. نمودارها و جدول به صورت خودکار به‌روزرسانی می‌شوند
+3. می‌توانید داده‌های مختلف را در نمودارها مشاهده کنید
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## تکنولوژی‌ها
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Next.js 16** - فریمورک React
+- **TypeScript** - تایپ‌ایمنی
+- **Tailwind CSS** - استایل‌دهی
+- **Recharts** - کتابخانه نمودارها
+- **Vazirmatn** - فونت فارسی
 
-## Deploy on Vercel
+## به‌روزرسانی داده‌ها
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+برای به‌روزرسانی داده‌ها، فایل `public/data.json` را ویرایش کنید یا از اسکریپت‌های Python در پوشه اصلی استفاده کنید:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# از پوشه اصلی
+python3 process_sheet5_data.py
+```
+
+## مجوز
+
+این پروژه برای استفاده داخلی ساخته شده است.
