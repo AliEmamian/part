@@ -13,6 +13,7 @@ export default function Home() {
   const [selectedCapacity, setSelectedCapacity] = useState<number>(2000);
   const [initialCapacity, setInitialCapacity] = useState<number>(2000);
   const [loading, setLoading] = useState(true);
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
   const [calculationResult, setCalculationResult] = useState(
     calculate(2000, {})
   );
@@ -87,26 +88,56 @@ export default function Home() {
           </p>
         </header>
 
-        {/* Assumptions Panel */}
-        <div className="mb-8">
-          <AssumptionsPanel
-            assumptions={assumptions}
-            onAssumptionChange={handleAssumptionChange}
-            onReset={handleReset}
-          />
-        </div>
+        {/* Main Layout: Assumptions Panel on left, Content on right */}
+        <div className={`grid gap-8 transition-all duration-300 ${
+          isPanelOpen 
+            ? 'lg:grid-cols-[320px_1fr] xl:grid-cols-[350px_1fr]' 
+            : 'lg:grid-cols-[0_1fr]'
+        }`}>
+          {/* Left Column: Assumptions Panel */}
+          <div className={`lg:sticky lg:top-8 lg:h-fit transition-all duration-300 ${
+            isPanelOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full lg:w-0 overflow-hidden'
+          }`}>
+            <AssumptionsPanel
+              assumptions={assumptions}
+              onAssumptionChange={handleAssumptionChange}
+              onReset={handleReset}
+            />
+          </div>
 
-        {/* Capacity Slider */}
-        <div className="mb-8">
-          <CapacitySlider
-            capacity={selectedCapacity}
-            initialCapacity={initialCapacity}
-            onCapacityChange={handleCapacityChange}
-          />
-        </div>
+          {/* Toggle Button */}
+          <button
+            onClick={() => setIsPanelOpen(!isPanelOpen)}
+            className={`fixed top-1/2 z-50 -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 p-2.5 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+              isPanelOpen 
+                ? 'left-[336px] xl:left-[366px]' 
+                : 'right-4'
+            }`}
+            aria-label={isPanelOpen ? 'بستن پنل فرضیات' : 'باز کردن پنل فرضیات'}
+          >
+            <svg 
+              className={`h-4 w-4 text-white transition-transform duration-300 ${isPanelOpen ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        {/* Summary Cards */}
-        <div className="mb-8 grid gap-6 md:grid-cols-3">
+          {/* Right Column: Main Content */}
+          <div className="space-y-8">
+            {/* Capacity Slider */}
+            <div>
+              <CapacitySlider
+                capacity={selectedCapacity}
+                initialCapacity={initialCapacity}
+                onCapacityChange={handleCapacityChange}
+              />
+            </div>
+
+            {/* Summary Cards */}
+            <div className="grid gap-6 md:grid-cols-3">
           <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
             <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-green-400/20 to-transparent"></div>
             <div className="relative">
@@ -194,8 +225,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Detailed Breakdown */}
-        <div className="mb-8 rounded-xl bg-gradient-to-br from-white to-slate-50 p-8 shadow-xl transition-shadow duration-300 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
+            {/* Detailed Breakdown */}
+            <div className="rounded-xl bg-gradient-to-br from-white to-slate-50 p-8 shadow-xl transition-shadow duration-300 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
           <div className="mb-6 flex items-center gap-3">
             <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2">
               <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,39 +443,41 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="mb-8 grid gap-6 md:grid-cols-2">
-          <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 p-2">
-                <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                </svg>
-              </div>
-              <h2 className="text-xl font-normal text-slate-800 dark:text-slate-100">
-                نمودار سهم از فروش - درآمدها
-              </h2>
             </div>
-            <RevenuePieChart revenue={calculationResult.revenue} />
-          </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 p-2">
+                    <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-normal text-slate-800 dark:text-slate-100">
+                    نمودار سهم از فروش - درآمدها
+                  </h2>
+                </div>
+                <RevenuePieChart revenue={calculationResult.revenue} />
+              </div>
 
-          <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-lg bg-gradient-to-br from-red-400 to-pink-500 p-2">
-                <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                </svg>
+              <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="rounded-lg bg-gradient-to-br from-red-400 to-pink-500 p-2">
+                    <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-normal text-slate-800 dark:text-slate-100">
+                    نمودار سهم از فروش - هزینه‌ها
+                  </h2>
+                </div>
+                <CostsPieChart
+                  costs={calculationResult.costs}
+                  revenueTotal={calculationResult.revenue.total}
+                />
               </div>
-              <h2 className="text-xl font-normal text-slate-800 dark:text-slate-100">
-                نمودار سهم از فروش - هزینه‌ها
-              </h2>
             </div>
-            <CostsPieChart
-              costs={calculationResult.costs}
-              revenueTotal={calculationResult.revenue.total}
-            />
           </div>
         </div>
       </div>
