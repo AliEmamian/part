@@ -14,6 +14,7 @@ export default function CapacitySlider({
   const minCapacity = 0;
   const maxCapacity = 3000;
   const percentage = ((capacity - minCapacity) / (maxCapacity - minCapacity)) * 100;
+  const initialPercentage = ((initialCapacity - minCapacity) / (maxCapacity - minCapacity)) * 100;
   const changePercentage = initialCapacity > 0 
     ? ((capacity - initialCapacity) / initialCapacity) * 100 
     : 0;
@@ -61,6 +62,25 @@ export default function CapacitySlider({
             width: `${percentage}%`,
           }}
         />
+        {/* نشانگر مقدار پیش‌فرض */}
+        {initialCapacity > 0 && (
+          <div
+            className="absolute top-0 h-4 w-1 bg-yellow-500 dark:bg-yellow-400 pointer-events-none z-20 shadow-md"
+            style={{
+              right: `calc(${initialPercentage}% - 2px)`,
+            }}
+            title={`مقدار پیش‌فرض: ${initialCapacity.toLocaleString('en-US')} تن`}
+          >
+            <div className="absolute -top-6 right-1/2 translate-x-1/2 whitespace-nowrap">
+              <div className="relative bg-yellow-500 dark:bg-yellow-400 text-white text-[10px] font-medium px-1.5 py-0.5 rounded shadow-md">
+                {initialCapacity.toLocaleString('en-US')}
+                <div className="absolute top-full right-1/2 translate-x-1/2 -translate-y-1/2">
+                  <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-yellow-500 dark:border-t-yellow-400"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <input
           type="range"
           min={minCapacity}

@@ -13,7 +13,6 @@ export default function Home() {
   const [selectedCapacity, setSelectedCapacity] = useState<number>(2000);
   const [initialCapacity, setInitialCapacity] = useState<number>(2000);
   const [loading, setLoading] = useState(true);
-  const [isPanelOpen, setIsPanelOpen] = useState(true);
   const [calculationResult, setCalculationResult] = useState(
     calculate(2000, {})
   );
@@ -79,51 +78,22 @@ export default function Home() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <header className="mb-12 text-center">
-          
+
           <h1 className="mb-3 bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-5xl font-normal text-transparent dark:from-slate-100 dark:to-slate-300">
             داشبورد تحلیل فروکروم جغتای
           </h1>
-          <p className="text-xl font-normal text-slate-600 dark:text-slate-400">
-            تحلیل درآمد، هزینه و سود بر اساس ظرفیت تولید
-          </p>
         </header>
 
         {/* Main Layout: Assumptions Panel on left, Content on right */}
-        <div className={`grid gap-8 transition-all duration-300 ${
-          isPanelOpen 
-            ? 'lg:grid-cols-[320px_1fr] xl:grid-cols-[350px_1fr]' 
-            : 'lg:grid-cols-[0_1fr]'
-        }`}>
+        <div className="grid gap-8 lg:grid-cols-[320px_1fr] xl:grid-cols-[350px_1fr]">
           {/* Left Column: Assumptions Panel */}
-          <div className={`lg:sticky lg:top-8 lg:h-fit transition-all duration-300 ${
-            isPanelOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full lg:w-0 overflow-hidden'
-          }`}>
+          <div className="lg:sticky lg:top-8 lg:h-fit">
             <AssumptionsPanel
               assumptions={assumptions}
               onAssumptionChange={handleAssumptionChange}
               onReset={handleReset}
             />
           </div>
-
-          {/* Toggle Button */}
-          <button
-            onClick={() => setIsPanelOpen(!isPanelOpen)}
-            className={`fixed top-1/2 z-50 -translate-y-1/2 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 p-2.5 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl ${
-              isPanelOpen 
-                ? 'left-[336px] xl:left-[366px]' 
-                : 'right-4'
-            }`}
-            aria-label={isPanelOpen ? 'بستن پنل فرضیات' : 'باز کردن پنل فرضیات'}
-          >
-            <svg 
-              className={`h-4 w-4 text-white transition-transform duration-300 ${isPanelOpen ? 'rotate-180' : ''}`}
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
 
           {/* Right Column: Main Content */}
           <div className="space-y-8">
@@ -138,311 +108,309 @@ export default function Home() {
 
             {/* Summary Cards */}
             <div className="grid gap-6 md:grid-cols-3">
-          <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-            <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-green-400/20 to-transparent"></div>
-            <div className="relative">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="rounded-lg bg-green-100 p-2 dark:bg-green-900/30">
-                  <svg className="h-5 w-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
+              <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
+                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-green-400/20 to-transparent"></div>
+                <div className="relative">
+                  <div className="mb-3 flex items-center gap-2">
+                    <div className="rounded-lg bg-green-100 p-2 dark:bg-green-900/30">
+                      <svg className="h-5 w-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                      </svg>
+                    </div>
+                    <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
+                    فروش (درآمد) 
+                    </h3>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <p
+                      className={`text-3xl font-bold transition-colors ${calculationResult.revenue.total >= 0
+                          ? 'text-green-600 dark:text-green-400'
+                          : 'text-red-600 dark:text-red-400'
+                        }`}
+                    >
+                      {(calculationResult.revenue.total).toLocaleString('en-US')}
+                    </p>
+                    <span className="text-sm font-medium text-slate-500">
+                      ({calculationResult.revenue.total > 0
+                        ? ((calculationResult.profit.operating / calculationResult.revenue.total) * 100).toFixed(1)
+                        : '0.0'}%)
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
                 </div>
-                <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
-                  سود عملیاتی
-                </h3>
               </div>
-              <div className="flex items-baseline gap-2">
-                <p
-                  className={`text-3xl font-bold transition-colors ${
-                    calculationResult.profit.operating >= 0
-                      ? 'text-green-600 dark:text-green-400'
-                      : 'text-red-600 dark:text-red-400'
-                  }`}
-                >
-                  {(calculationResult.profit.operating ).toLocaleString('en-US')}
-                </p>
-                <span className="text-sm font-medium text-slate-500">
-                  ({calculationResult.revenue.total > 0 
-                    ? ((calculationResult.profit.operating / calculationResult.revenue.total) * 100).toFixed(1)
-                    : '0.0'}%)
-                </span>
-              </div>
-              <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
-            </div>
-          </div>
 
-          <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-            <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-red-400/20 to-transparent"></div>
-            <div className="relative">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="rounded-lg bg-red-100 p-2 dark:bg-red-900/30">
-                  <svg className="h-5 w-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+              <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
+                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-red-400/20 to-transparent"></div>
+                <div className="relative">
+                  <div className="mb-3 flex items-center gap-2">
+                    <div className="rounded-lg bg-red-100 p-2 dark:bg-red-900/30">
+                      <svg className="h-5 w-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
+                      جمع هزینه‌ها
+                    </h3>
+                  </div>
+                  <p className="text-3xl font-bold text-red-600 transition-colors dark:text-red-400">
+                    {(calculationResult.costs.total).toLocaleString('en-US')}
+                  </p>
+                  <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
                 </div>
-                <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
-                  جمع هزینه‌ها
-                </h3>
               </div>
-              <p className="text-3xl font-bold text-red-600 transition-colors dark:text-red-400">
-                {(calculationResult.costs.total ).toLocaleString('en-US')}
-              </p>
-              <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
-            </div>
-          </div>
 
-          <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-            <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-blue-400/20 to-transparent"></div>
-            <div className="relative">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30">
-                  <svg className="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+              <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
+                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-blue-400/20 to-transparent"></div>
+                <div className="relative">
+                  <div className="mb-3 flex items-center gap-2">
+                    <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30">
+                      <svg className="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
+                      سود خالص
+                    </h3>
+                  </div>
+                  <div className="flex items-baseline gap-2">
+                    <p
+                      className={`text-3xl font-bold transition-colors ${calculationResult.profit.net >= 0
+                          ? 'text-green-600 dark:text-green-400'
+                          : 'text-red-600 dark:text-red-400'
+                        }`}
+                    >
+                      {(calculationResult.profit.net).toLocaleString('en-US')}
+                    </p>
+                    <span className="text-sm font-medium text-slate-500">
+                      ({calculationResult.revenue.total > 0
+                        ? ((calculationResult.profit.net / calculationResult.revenue.total) * 100).toFixed(1)
+                        : '0.0'}%)
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
                 </div>
-                <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
-                  سود خالص
-                </h3>
               </div>
-              <div className="flex items-baseline gap-2">
-                <p
-                  className={`text-3xl font-bold transition-colors ${
-                    calculationResult.profit.net >= 0
-                      ? 'text-green-600 dark:text-green-400'
-                      : 'text-red-600 dark:text-red-400'
-                  }`}
-                >
-                  {(calculationResult.profit.net ).toLocaleString('en-US')}
-                </p>
-                <span className="text-sm font-medium text-slate-500">
-                  ({calculationResult.revenue.total > 0 
-                    ? ((calculationResult.profit.net / calculationResult.revenue.total) * 100).toFixed(1)
-                    : '0.0'}%)
-                </span>
-              </div>
-              <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
             </div>
-          </div>
-        </div>
 
             {/* Detailed Breakdown */}
             <div className="rounded-xl bg-gradient-to-br from-white to-slate-50 p-8 shadow-xl transition-shadow duration-300 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2">
-              <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-normal text-slate-800 dark:text-slate-100">
-              جزئیات محاسبات برای ظرفیت <span className="text-blue-600 dark:text-blue-400">{selectedCapacity.toLocaleString('en-US')} تن</span>
-            </h2>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div>
-              <h3 className="mb-3 text-lg font-normal text-green-600 dark:text-green-400">
-                درآمدها (میلیون تومان)
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-3 py-2 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
-                  <span className="font-medium text-slate-700 dark:text-slate-300">فروش کلوخه:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="font-medium">
-                      {(calculationResult.revenue.klohe ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      ({calculationResult.revenue.total > 0 
-                        ? ((calculationResult.revenue.klohe / calculationResult.revenue.total) * 100).toFixed(1)
-                        : '0.0'}%)
-                    </span>
+              <div className="mb-6 flex items-center gap-3">
+                <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2">
+                  <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-normal text-slate-800 dark:text-slate-100">
+                  جزئیات محاسبات برای ظرفیت <span className="text-blue-600 dark:text-blue-400">{selectedCapacity.toLocaleString('en-US')} تن</span>
+                </h2>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div>
+                  <h3 className="mb-3 text-lg font-normal text-green-600 dark:text-green-400">
+                    درآمدها (میلیون تومان)
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-3 py-2 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">فروش کلوخه:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="font-medium">
+                          {(calculationResult.revenue.klohe).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          ({calculationResult.revenue.total > 0
+                            ? ((calculationResult.revenue.klohe / calculationResult.revenue.total) * 100).toFixed(1)
+                            : '0.0'}%)
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-3 py-2 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">فروش خاکه:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="font-medium">
+                          {(calculationResult.revenue.khake).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          ({calculationResult.revenue.total > 0
+                            ? ((calculationResult.revenue.khake / calculationResult.revenue.total) * 100).toFixed(1)
+                            : '0.0'}%)
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-3 py-2 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">فروش جیگ و میز:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="font-medium">
+                          {(calculationResult.revenue.jigMiz).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          ({calculationResult.revenue.total > 0
+                            ? ((calculationResult.revenue.jigMiz / calculationResult.revenue.total) * 100).toFixed(1)
+                            : '0.0'}%)
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-green-200 bg-green-50 px-4 py-3 font-bold dark:border-green-800 dark:bg-green-900/20">
+                      <span className="text-green-700 dark:text-green-300">جمع درآمدها:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-green-600 dark:text-green-400">
+                          {(calculationResult.revenue.total).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          (100.0%)
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-3 py-2 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
-                  <span className="font-medium text-slate-700 dark:text-slate-300">فروش خاکه:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="font-medium">
-                      {(calculationResult.revenue.khake ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      ({calculationResult.revenue.total > 0 
-                        ? ((calculationResult.revenue.khake / calculationResult.revenue.total) * 100).toFixed(1)
-                        : '0.0'}%)
-                    </span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-3 py-2 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
-                  <span className="font-medium text-slate-700 dark:text-slate-300">فروش جیگ و میز:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="font-medium">
-                      {(calculationResult.revenue.jigMiz ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      ({calculationResult.revenue.total > 0 
-                        ? ((calculationResult.revenue.jigMiz / calculationResult.revenue.total) * 100).toFixed(1)
-                        : '0.0'}%)
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-green-200 bg-green-50 px-4 py-3 font-bold dark:border-green-800 dark:bg-green-900/20">
-                  <span className="text-green-700 dark:text-green-300">جمع درآمدها:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="text-green-600 dark:text-green-400">
-                      {(calculationResult.revenue.total ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      (100.0%)
-                    </span>
+
+                <div>
+                  <h3 className="mb-3 text-lg font-normal text-red-600 dark:text-red-400">
+                    هزینه‌ها (میلیون تومان)
+                  </h3>
+                  <div className="space-y-2">
+                    {/* هزینه‌های عملیاتی */}
+                    <div className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-400">
+                      هزینه‌های عملیاتی:
+                    </div>
+                    <div className="mr-4 space-y-3">
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">هزینه ثابت:</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-medium">
+                            {(calculationResult.costs.fixed).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.fixed / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">هزینه متغیر:</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-medium">
+                            {(calculationResult.costs.variable).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.variable / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">بهای کک:</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-medium">
+                            {(calculationResult.costs.coke).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.coke / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">بهای کرومیت:</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-medium">
+                            {(calculationResult.costs.chromite).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.chromite / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">هزینه برق:</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-medium">
+                            {(calculationResult.costs.electricity).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.electricity / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="font-medium text-slate-700 dark:text-slate-300">سایر هزینه‌ها:</span>
+                        <div className="flex items-center gap-4">
+                          <span className="font-medium">
+                            {(calculationResult.costs.other).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.other / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* جمع هزینه‌های عملیاتی */}
+                    <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-orange-200 bg-orange-50 px-4 py-3 font-semibold dark:border-orange-800 dark:bg-orange-900/20">
+                      <span className="text-orange-700 dark:text-orange-300">جمع هزینه‌های عملیاتی:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-orange-600 dark:text-orange-400">
+                          {((calculationResult.costs.fixed +
+                            calculationResult.costs.variable +
+                            calculationResult.costs.coke +
+                            calculationResult.costs.chromite +
+                            calculationResult.costs.electricity +
+                            calculationResult.costs.other)).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          ({calculationResult.revenue.total > 0
+                            ? (((calculationResult.costs.fixed +
+                              calculationResult.costs.variable +
+                              calculationResult.costs.coke +
+                              calculationResult.costs.chromite +
+                              calculationResult.costs.electricity +
+                              calculationResult.costs.other) / calculationResult.revenue.total) * 100).toFixed(1)
+                            : '0.0'}%)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* حقوق دولتی */}
+                    <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-4 py-3 dark:border-blue-800 dark:bg-blue-900/20">
+                      <span className="font-semibold text-blue-700 dark:text-blue-300">حقوق دولتی:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="font-bold text-blue-600 dark:text-blue-400">
+                          {(calculationResult.costs.governmentFee).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          ({calculationResult.revenue.total > 0
+                            ? ((calculationResult.costs.governmentFee / calculationResult.revenue.total) * 100).toFixed(1)
+                            : '0.0'}%)
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* جمع کل هزینه‌ها */}
+                    <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-red-300 bg-red-50 px-4 py-3 font-bold text-lg dark:border-red-700 dark:bg-red-900/20">
+                      <span className="text-red-700 dark:text-red-300">جمع کل هزینه‌ها:</span>
+                      <div className="flex items-center gap-4">
+                        <span className="text-red-600 dark:text-red-400">
+                          {(calculationResult.costs.total).toLocaleString('en-US')}
+                        </span>
+                        <span className="text-sm text-slate-500">
+                          ({calculationResult.revenue.total > 0
+                            ? ((calculationResult.costs.total / calculationResult.revenue.total) * 100).toFixed(1)
+                            : '0.0'}%)
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div>
-              <h3 className="mb-3 text-lg font-normal text-red-600 dark:text-red-400">
-                هزینه‌ها (میلیون تومان)
-              </h3>
-              <div className="space-y-2">
-                {/* هزینه‌های عملیاتی */}
-                <div className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-400">
-                  هزینه‌های عملیاتی:
-                </div>
-                <div className="mr-4 space-y-3">
-                  <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">هزینه ثابت:</span>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">
-                        {(calculationResult.costs.fixed ).toLocaleString('en-US')}
-                      </span>
-                      <span className="text-sm text-slate-500">
-                        ({calculationResult.revenue.total > 0 
-                          ? ((calculationResult.costs.fixed / calculationResult.revenue.total) * 100).toFixed(1)
-                          : '0.0'}%)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">هزینه متغیر:</span>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">
-                        {(calculationResult.costs.variable ).toLocaleString('en-US')}
-                      </span>
-                      <span className="text-sm text-slate-500">
-                        ({calculationResult.revenue.total > 0 
-                          ? ((calculationResult.costs.variable / calculationResult.revenue.total) * 100).toFixed(1)
-                          : '0.0'}%)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">بهای کک:</span>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">
-                        {(calculationResult.costs.coke ).toLocaleString('en-US')}
-                      </span>
-                      <span className="text-sm text-slate-500">
-                        ({calculationResult.revenue.total > 0 
-                          ? ((calculationResult.costs.coke / calculationResult.revenue.total) * 100).toFixed(1)
-                          : '0.0'}%)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">بهای کرومیت:</span>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">
-                        {(calculationResult.costs.chromite ).toLocaleString('en-US')}
-                      </span>
-                      <span className="text-sm text-slate-500">
-                        ({calculationResult.revenue.total > 0 
-                          ? ((calculationResult.costs.chromite / calculationResult.revenue.total) * 100).toFixed(1)
-                          : '0.0'}%)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">هزینه برق:</span>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">
-                        {(calculationResult.costs.electricity ).toLocaleString('en-US')}
-                      </span>
-                      <span className="text-sm text-slate-500">
-                        ({calculationResult.revenue.total > 0 
-                          ? ((calculationResult.costs.electricity / calculationResult.revenue.total) * 100).toFixed(1)
-                          : '0.0'}%)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-3 py-2 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">سایر هزینه‌ها:</span>
-                    <div className="flex items-center gap-4">
-                      <span className="font-medium">
-                        {(calculationResult.costs.other ).toLocaleString('en-US')}
-                      </span>
-                      <span className="text-sm text-slate-500">
-                        ({calculationResult.revenue.total > 0 
-                          ? ((calculationResult.costs.other / calculationResult.revenue.total) * 100).toFixed(1)
-                          : '0.0'}%)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* جمع هزینه‌های عملیاتی */}
-                <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-orange-200 bg-orange-50 px-4 py-3 font-semibold dark:border-orange-800 dark:bg-orange-900/20">
-                  <span className="text-orange-700 dark:text-orange-300">جمع هزینه‌های عملیاتی:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="text-orange-600 dark:text-orange-400">
-                      {((calculationResult.costs.fixed +
-                        calculationResult.costs.variable +
-                        calculationResult.costs.coke +
-                        calculationResult.costs.chromite +
-                        calculationResult.costs.electricity +
-                        calculationResult.costs.other) ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      ({calculationResult.revenue.total > 0 
-                        ? (((calculationResult.costs.fixed +
-                          calculationResult.costs.variable +
-                          calculationResult.costs.coke +
-                          calculationResult.costs.chromite +
-                          calculationResult.costs.electricity +
-                          calculationResult.costs.other) / calculationResult.revenue.total) * 100).toFixed(1)
-                        : '0.0'}%)
-                    </span>
-                  </div>
-                </div>
-
-                {/* حقوق دولتی */}
-                <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-4 py-3 dark:border-blue-800 dark:bg-blue-900/20">
-                  <span className="font-semibold text-blue-700 dark:text-blue-300">حقوق دولتی:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-blue-600 dark:text-blue-400">
-                      {(calculationResult.costs.governmentFee ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      ({calculationResult.revenue.total > 0 
-                        ? ((calculationResult.costs.governmentFee / calculationResult.revenue.total) * 100).toFixed(1)
-                        : '0.0'}%)
-                    </span>
-                  </div>
-                </div>
-
-                {/* جمع کل هزینه‌ها */}
-                <div className="mt-4 flex justify-between items-center rounded-lg border-2 border-red-300 bg-red-50 px-4 py-3 font-bold text-lg dark:border-red-700 dark:bg-red-900/20">
-                  <span className="text-red-700 dark:text-red-300">جمع کل هزینه‌ها:</span>
-                  <div className="flex items-center gap-4">
-                    <span className="text-red-600 dark:text-red-400">
-                      {(calculationResult.costs.total ).toLocaleString('en-US')}
-                    </span>
-                    <span className="text-sm text-slate-500">
-                      ({calculationResult.revenue.total > 0 
-                        ? ((calculationResult.costs.total / calculationResult.revenue.total) * 100).toFixed(1)
-                        : '0.0'}%)
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
               <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
