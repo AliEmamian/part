@@ -10,6 +10,7 @@ interface Assumption {
   row?: number;
 }
 
+
 interface AssumptionsPanelProps {
   assumptions: Record<string, Assumption>;
   onAssumptionChange: (key: string, value: number) => void;
@@ -73,10 +74,15 @@ export default function AssumptionsPanel({
   ];
 
   const renderInput = (key: string, assumption: Assumption) => {
+    const isDollarPrice = key === 'قیمت دلار';
+    
     return (
       <div key={key} className="space-y-2 transition-transform duration-200 hover:scale-[1.02]">
-        <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+        <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
           {assumption.label}
+          {isDollarPrice && (
+            <span className="text-base font-normal text-green-600 dark:text-green-400">$</span>
+          )}
           {assumption.unit && (
             <span className="mr-1 text-xs font-normal text-slate-500">({assumption.unit})</span>
           )}
