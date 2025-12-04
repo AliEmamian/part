@@ -70,7 +70,7 @@ export default function Home() {
     );
   }
 
-  const minCapacity = assumptions['حداقل تولید ماهانه']?.value || 500;
+  const minCapacity = assumptions['حداقل  تولید ماهانه']?.value || 500;
   const maxCapacity = assumptions['حداکثر تولید ماهانه']?.value || 3000;
 
   return (
