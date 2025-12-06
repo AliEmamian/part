@@ -28,19 +28,13 @@ export default function CapacitySlider({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 className="text-xl font-normal text-slate-800 dark:text-slate-100">
+          <h3 className="text-l font-normal text-slate-800 dark:text-slate-100">
             ظرفیت تولید ماهانه
           </h3>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-2 shadow-md">
-            <span className="text-2xl font-bold text-white">
-              {capacity.toLocaleString('en-US')} تن
-            </span>
-          </div>
-          {changePercentage !== 0 && (
+        {changePercentage !== 0 && (
             <span
-              className={`text-lg font-semibold ${
+              className={`text-md font-semibold ${
                 changePercentage > 0
                   ? 'text-green-600 dark:text-green-400'
                   : 'text-red-600 dark:text-red-400'
@@ -50,6 +44,13 @@ export default function CapacitySlider({
               {changePercentage.toFixed(1)}%
             </span>
           )}
+        <div className="flex items-center gap-3">
+          <div className="rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-2 shadow-md">
+            <span className="text-md  text-white">
+              {capacity.toLocaleString('en-US')} تن
+            </span>
+          </div>
+         
         </div>
       </div>
       <div className="relative">

@@ -123,26 +123,6 @@ export default function AssumptionsPanel({
       </div>
 
       <div className="grid grid-cols-2 gap-2.5">
-        {/* فرضیات تولید */}
-        <div className="space-y-1.5 rounded-lg bg-slate-50/50 p-2.5 dark:bg-slate-800/50">
-          <h3 className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-1.5">
-            تولید(تن)
-          </h3>
-          {productionAssumptions.map((key) =>
-            localAssumptions[key] ? renderInput(key, localAssumptions[key]) : null
-          )}
-        </div>
-
-        {/* فرضیات هزینه */}
-        <div className="space-y-1.5 rounded-lg bg-slate-50/50 p-2.5 dark:bg-slate-800/50">
-          <h3 className="text-xs font-semibold text-red-600 dark:text-red-400 mb-1.5">
-            هزینه‌ها(میلیون تومان)
-          </h3>
-          {costAssumptions.map((key) =>
-            localAssumptions[key] ? renderInput(key, localAssumptions[key]) : null
-          )}
-        </div>
-
         {/* فرضیات قیمت */}
         <div className="space-y-1.5 rounded-lg bg-slate-50/50 p-2.5 dark:bg-slate-800/50">
           <h3 className="text-xs font-semibold text-green-600 dark:text-green-400 mb-1.5">

@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react';
 import AssumptionsPanel from '@/components/AssumptionsPanel';
 import CapacitySlider from '@/components/CapacitySlider';
+import FixedCostSlider from '@/components/FixedCostSlider';
+import VariableCostSlider from '@/components/VariableCostSlider';
+import ElectricityCostSlider from '@/components/ElectricityCostSlider';
+import DollarPriceSlider from '@/components/DollarPriceSlider';
 import RevenuePieChart from '@/components/RevenuePieChart';
 import CostsPieChart from '@/components/CostsPieChart';
 import { calculate, Assumptions } from '@/utils/calculations';
@@ -12,6 +16,14 @@ export default function Home() {
   const [initialAssumptions, setInitialAssumptions] = useState<Assumptions>({});
   const [selectedCapacity, setSelectedCapacity] = useState<number>(2000);
   const [initialCapacity, setInitialCapacity] = useState<number>(2000);
+  const [fixedCost, setFixedCost] = useState<number>(20000);
+  const [initialFixedCost, setInitialFixedCost] = useState<number>(20000);
+  const [variableCost, setVariableCost] = useState<number>(15);
+  const [initialVariableCost, setInitialVariableCost] = useState<number>(15);
+  const [electricityCost, setElectricityCost] = useState<number>(5);
+  const [initialElectricityCost, setInitialElectricityCost] = useState<number>(5);
+  const [dollarPrice, setDollarPrice] = useState<number>(0.08);
+  const [initialDollarPrice, setInitialDollarPrice] = useState<number>(0.08);
   const [loading, setLoading] = useState(true);
   const [calculationResult, setCalculationResult] = useState(
     calculate(2000, {})
@@ -27,8 +39,20 @@ export default function Home() {
         const minCapacity = data['حداقل تولید ماهانه']?.value || 500;
         const maxCapacity = data['حداکثر تولید ماهانه']?.value || 3000;
         const currentCapacity = data['تولید فعلی ماهانه']?.value || 2000;
+        const currentFixedCost = data['هزینه ثابت']?.value || 20000;
+        const currentVariableCost = data['هزینه متغیردر هر تن']?.value || 15;
+        const currentElectricityCost = data['هزینه واحد برق بر تن']?.value || 5;
+        const currentDollarPrice = data['قیمت دلار']?.value || 0.08;
         setSelectedCapacity(currentCapacity);
         setInitialCapacity(currentCapacity);
+        setFixedCost(currentFixedCost);
+        setInitialFixedCost(currentFixedCost);
+        setVariableCost(currentVariableCost);
+        setInitialVariableCost(currentVariableCost);
+        setElectricityCost(currentElectricityCost);
+        setInitialElectricityCost(currentElectricityCost);
+        setDollarPrice(currentDollarPrice);
+        setInitialDollarPrice(currentDollarPrice);
         setCalculationResult(calculate(currentCapacity, data));
         setLoading(false);
       })
@@ -44,6 +68,17 @@ export default function Home() {
       [key]: { ...assumptions[key], value },
     };
     setAssumptions(updatedAssumptions);
+    // اگر هزینه‌ها تغییر کردند، state اسلایدرها را هم به‌روز کن
+    if (key === 'هزینه ثابت') {
+      setFixedCost(value);
+    } else if (key === 'هزینه متغیردر هر تن') {
+      setVariableCost(value);
+    } else if (key === 'هزینه واحد برق بر تن') {
+      setElectricityCost(value);
+    } else if (key === 'قیمت دلار') {
+      setDollarPrice(value);
+    }
+    // محاسبات را با assumptions به‌روز شده انجام بده
     setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
   };
 
@@ -52,10 +87,74 @@ export default function Home() {
     setCalculationResult(calculate(capacity, assumptions));
   };
 
+  const handleFixedCostChange = (cost: number) => {
+    setFixedCost(cost);
+    const updatedAssumptions = {
+      ...assumptions,
+      'هزینه ثابت': { 
+        ...assumptions['هزینه ثابت'], 
+        label: assumptions['هزینه ثابت']?.label || 'هزینه ثابت',
+        unit: assumptions['هزینه ثابت']?.unit || '',
+        value: cost 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleVariableCostChange = (cost: number) => {
+    setVariableCost(cost);
+    const updatedAssumptions = {
+      ...assumptions,
+      'هزینه متغیردر هر تن': { 
+        ...assumptions['هزینه متغیردر هر تن'], 
+        label: assumptions['هزینه متغیردر هر تن']?.label || 'هزینه متغیردر هر تن',
+        unit: assumptions['هزینه متغیردر هر تن']?.unit || '',
+        value: cost 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleElectricityCostChange = (cost: number) => {
+    setElectricityCost(cost);
+    const updatedAssumptions = {
+      ...assumptions,
+      'هزینه واحد برق بر تن': { 
+        ...assumptions['هزینه واحد برق بر تن'], 
+        label: assumptions['هزینه واحد برق بر تن']?.label || 'هزینه واحد برق بر تن',
+        unit: assumptions['هزینه واحد برق بر تن']?.unit || '',
+        value: cost 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleDollarPriceChange = (price: number) => {
+    setDollarPrice(price);
+    const updatedAssumptions = {
+      ...assumptions,
+      'قیمت دلار': { 
+        ...assumptions['قیمت دلار'], 
+        label: assumptions['قیمت دلار']?.label || 'قیمت دلار',
+        unit: assumptions['قیمت دلار']?.unit || '',
+        value: price 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
   const handleReset = () => {
     const resetAssumptions = JSON.parse(JSON.stringify(initialAssumptions)); // Deep copy
     setAssumptions(resetAssumptions);
     setSelectedCapacity(initialCapacity);
+    setFixedCost(initialFixedCost);
+    setVariableCost(initialVariableCost);
+    setElectricityCost(initialElectricityCost);
+    setDollarPrice(initialDollarPrice);
     setCalculationResult(calculate(initialCapacity, resetAssumptions));
   };
 
@@ -97,12 +196,40 @@ export default function Home() {
 
           {/* Right Column: Main Content */}
           <div className="space-y-8">
-            {/* Capacity Slider */}
-            <div>
+            {/* Sliders - ظرفیت تولید و هزینه ثابت */}
+            <div className="grid gap-6 md:grid-cols-2">
               <CapacitySlider
                 capacity={selectedCapacity}
                 initialCapacity={initialCapacity}
                 onCapacityChange={handleCapacityChange}
+              />
+              <FixedCostSlider
+                fixedCost={fixedCost}
+                initialFixedCost={initialFixedCost}
+                onFixedCostChange={handleFixedCostChange}
+              />
+            </div>
+
+            {/* Sliders - هزینه متغیر و هزینه واحد برق */}
+            <div className="grid gap-6 md:grid-cols-2">
+              <VariableCostSlider
+                variableCost={variableCost}
+                initialVariableCost={initialVariableCost}
+                onVariableCostChange={handleVariableCostChange}
+              />
+              <ElectricityCostSlider
+                electricityCost={electricityCost}
+                initialElectricityCost={initialElectricityCost}
+                onElectricityCostChange={handleElectricityCostChange}
+              />
+            </div>
+
+            {/* Slider - قیمت دلار */}
+            <div>
+              <DollarPriceSlider
+                dollarPrice={dollarPrice}
+                initialDollarPrice={initialDollarPrice}
+                onDollarPriceChange={handleDollarPriceChange}
               />
             </div>
 

@@ -71,10 +71,11 @@ export function calculate(
   const totalRevenue = kloheRevenue + khakeRevenue + jigMizRevenue;
 
   // محاسبه هزینه‌ها
-  // هزینه ثابت = پرسنل * حقوق هر نفر
+  // هزینه ثابت: اگر مقدار مستقیم در assumptions وجود داشت از آن استفاده می‌کنیم، در غیر این صورت از پرسنل * حقوق محاسبه می‌کنیم
   const personnel = assumptions['پرسنل']?.value || 285;
   const salaryPerPerson = assumptions['حقوق هر نفر']?.value || 70.175;
-  const fixedCostTotal = personnel * salaryPerPerson;
+  const directFixedCost = assumptions['هزینه ثابت']?.value;
+  const fixedCostTotal = directFixedCost !== undefined ? directFixedCost : personnel * salaryPerPerson;
 
   const variableCostTotal = capacity * variableCostPerTon;
   const cokeCost = capacity * cokeConsumption * cokePrice;
