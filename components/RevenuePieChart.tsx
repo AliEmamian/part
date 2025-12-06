@@ -44,10 +44,10 @@ const CustomLabel = ({
       fill="white"
       textAnchor={x > cx ? 'start' : 'end'}
       dominantBaseline="central"
-      fontSize={14}
+      fontSize={10}
       fontWeight="bold"
       style={{
-        textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
       }}
     >
       {`${percentage}%`}
@@ -84,7 +84,7 @@ export default function RevenuePieChart({ revenue }: RevenuePieChartProps) {
   ].filter((item) => item.value > 0);
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={200}>
       <PieChart>
         <Pie
           data={data}
@@ -94,8 +94,8 @@ export default function RevenuePieChart({ revenue }: RevenuePieChartProps) {
           label={(props) => (
             <CustomLabel {...props} percentage={props.percentage} />
           )}
-          outerRadius={120}
-          innerRadius={50}
+          outerRadius={60}
+          innerRadius={25}
           fill="#8884d8"
           dataKey="value"
         >
@@ -109,6 +109,7 @@ export default function RevenuePieChart({ revenue }: RevenuePieChartProps) {
             border: '1px solid #e2e8f0',
             borderRadius: '8px',
             direction: 'rtl',
+            fontSize: '11px',
           }}
           formatter={(value: number, name: string) => [
             `${value.toLocaleString('en-US')} میلیون تومان`,
@@ -117,19 +118,19 @@ export default function RevenuePieChart({ revenue }: RevenuePieChartProps) {
         />
         <Legend
           verticalAlign="bottom"
-          height={60}
+          height={40}
           iconType="circle"
-          iconSize={10}
+          iconSize={6}
           wrapperStyle={{
-            paddingTop: '20px',
-            fontSize: '13px',
+            paddingTop: '10px',
+            fontSize: '10px',
             fontWeight: '500',
             color: '#ffffff',
           }}
           formatter={(value: string, entry: any) => {
             const dataItem = data.find((d) => d.name === value);
             return (
-              <span style={{ color: '#ffffff', fontSize: '13px', fontWeight: '600', marginRight: '8px' }}>
+              <span style={{ color: '#ffffff', fontSize: '10px', fontWeight: '600', marginRight: '4px' }}>
                 {value} ({dataItem?.percentage}%)
               </span>
             );

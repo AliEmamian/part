@@ -368,22 +368,22 @@ export default function Home() {
   const maxCapacity = assumptions['حداکثر تولید ماهانه']?.value || 3000;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <header className="mb-12">
+    <div className="h-screen overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="flex h-full flex-col">
+        {/* Compact Header */}
+        <header className="flex-shrink-0 border-b border-slate-200 bg-white/80 px-4 py-2 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/80">
           <div className="flex items-center justify-between">
-            <h1 className="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-5xl font-normal text-transparent dark:from-slate-100 dark:to-slate-300">
+            <h1 className="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-xl font-medium text-transparent dark:from-slate-100 dark:to-slate-300">
               داشبورد تحلیل فروکروم جغتای
             </h1>
             
             {/* Reset Button */}
             <button
               onClick={handleReset}
-              className="group flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-slate-600 to-slate-700 px-5 py-3 text-sm font-medium text-white shadow-lg transition-all duration-300 hover:from-slate-700 hover:to-slate-800 hover:shadow-xl hover:scale-105 active:scale-95 dark:from-slate-700 dark:to-slate-800 dark:hover:from-slate-600 dark:hover:to-slate-700"
+              className="group flex items-center gap-2 rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-3 py-1.5 text-xs font-medium text-white shadow-md transition-all duration-200 hover:from-slate-700 hover:to-slate-800 hover:shadow-lg hover:scale-105 active:scale-95 dark:from-slate-700 dark:to-slate-800 dark:hover:from-slate-600 dark:hover:to-slate-700"
             >
               <svg 
-                className="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" 
+                className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" 
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24"
@@ -395,17 +395,16 @@ export default function Home() {
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" 
                 />
               </svg>
-              <span>بازنشانی همه</span>
+              <span>بازنشانی</span>
             </button>
           </div>
         </header>
 
-        {/* Main Layout: Content on left, Sidebar on right */}
-        <div className="grid gap-8 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_420px]">
-          {/* Left Column: Main Content */}
-          <div className="mx-auto max-w-3xl space-y-8">
-            {/* Sliders - ظرفیت تولید و هزینه ثابت */}
-            <div className="grid gap-6 md:grid-cols-2">
+        {/* Main Content Area - No Scroll */}
+        <div className="flex-1 overflow-hidden">
+          <div className="grid h-full grid-cols-12 gap-3 p-3">
+            {/* Left Column: Main Sliders (4 sliders) */}
+            <div className="col-span-12 space-y-2 overflow-y-auto lg:col-span-3">
               <CapacitySlider
                 capacity={selectedCapacity}
                 initialCapacity={initialCapacity}
@@ -416,10 +415,6 @@ export default function Home() {
                 initialFixedCost={initialFixedCost}
                 onFixedCostChange={handleFixedCostChange}
               />
-            </div>
-
-            {/* Sliders - هزینه متغیر و هزینه واحد برق */}
-            <div className="grid gap-6 md:grid-cols-2">
               <VariableCostSlider
                 variableCost={variableCost}
                 initialVariableCost={initialVariableCost}
@@ -432,49 +427,49 @@ export default function Home() {
               />
             </div>
 
-            {/* Summary Cards */}
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-green-400/20 to-transparent"></div>
-                <div className="relative">
-                  <div className="mb-3 flex items-center gap-2">
-                    <div className="rounded-lg bg-green-100 p-2 dark:bg-green-900/30">
-                      <svg className="h-5 w-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {/* Center Column: Summary Cards, Charts, and Details */}
+            <div className="col-span-12 space-y-2 overflow-y-auto lg:col-span-6">
+
+              {/* Summary Cards */}
+              <div className="grid grid-cols-3 gap-2">
+                <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-white to-slate-50 p-3 shadow-md transition-all duration-200 hover:shadow-lg dark:from-slate-800 dark:to-slate-900">
+                  <div className="mb-1.5 flex items-center gap-1.5">
+                    <div className="rounded bg-green-100 p-1 dark:bg-green-900/30">
+                      <svg className="h-3 w-3 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                       </svg>
                     </div>
-                    <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
-                    فروش (درآمد) 
+                    <h3 className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                      فروش
                     </h3>
                   </div>
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-baseline gap-1">
                     <p
-                      className={`text-3xl font-bold transition-colors ${calculationResult.revenue.total >= 0
+                      className={`text-lg font-bold transition-colors ${calculationResult.revenue.total >= 0
                           ? 'text-green-600 dark:text-green-400'
                           : 'text-red-600 dark:text-red-400'
                         }`}
                     >
                       {Math.round(calculationResult.revenue.total).toLocaleString('en-US')}
                     </p>
-                    <span className="text-sm font-medium text-slate-500">
+                    {/* <span className="text-[10px] font-medium text-slate-500">
                       ({calculationResult.revenue.total > 0
                         ? ((calculationResult.profit.operating / calculationResult.revenue.total) * 100).toFixed(1)
                         : '0.0'}%)
-                    </span>
+                    </span> */}
                   </div>
-                  <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
+                  <p className="mt-0.5 text-[9px] font-medium text-slate-500">میلیون تومان</p>
                   {/* نمایش تغییر نسبت به مقدار پیش‌فرض */}
                   {(() => {
                     const currentValue = calculationResult.revenue.total;
                     const initialValue = initialCalculationResult.revenue.total;
                     const diff = currentValue - initialValue;
-                    // فقط اگر تفاوت قابل توجه باشد نمایش بده (بیش از 0.1)
                     if (Math.abs(diff) > 0.1 && initialValue > 0) {
                       const percentChange = (diff / initialValue) * 100;
                       return (
-                        <div className="mt-2 flex items-center gap-2 text-xs">
+                        <div className="mt-1 flex items-center gap-1 text-[9px]">
                           <span className={`font-medium ${diff > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                            {diff > 0 ? '+' : ''}{diff.toLocaleString('en-US', { maximumFractionDigits: 1 })}
+                            {diff > 0 ? '+' : ''}{diff.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                           </span>
                           <span className={`font-medium ${diff > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                             ({percentChange > 0 ? '+' : ''}{percentChange.toFixed(1)}%)
@@ -485,37 +480,39 @@ export default function Home() {
                     return null;
                   })()}
                 </div>
-              </div>
 
-              <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-red-400/20 to-transparent"></div>
-                <div className="relative">
-                  <div className="mb-3 flex items-center gap-2">
-                    <div className="rounded-lg bg-red-100 p-2 dark:bg-red-900/30">
-                      <svg className="h-5 w-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-white to-slate-50 p-3 shadow-md transition-all duration-200 hover:shadow-lg dark:from-slate-800 dark:to-slate-900">
+                  <div className="mb-1.5 flex items-center gap-1.5">
+                    <div className="rounded bg-red-100 p-1 dark:bg-red-900/30">
+                      <svg className="h-3 w-3 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
-                    <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
-                      جمع هزینه‌ها
+                    <h3 className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                      هزینه‌ها
                     </h3>
                   </div>
-                  <p className="text-3xl font-bold text-red-600 transition-colors dark:text-red-400">
-                    {Math.round(calculationResult.costs.total).toLocaleString('en-US')}
-                  </p>
-                  <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
-                  {/* نمایش تغییر نسبت به مقدار پیش‌فرض */}
+                  <div className="flex items-baseline gap-1">
+                    <p className="text-lg font-bold text-red-600 transition-colors dark:text-red-400">
+                      {Math.round(calculationResult.costs.total).toLocaleString('en-US')}
+                    </p>
+                    <span className="text-[10px] font-medium text-slate-500">
+                      ({calculationResult.revenue.total > 0
+                        ? ((calculationResult.costs.total / calculationResult.revenue.total) * 100).toFixed(1)
+                        : '0.0'}%)
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-[9px] font-medium text-slate-500">میلیون تومان</p>
                   {(() => {
                     const currentValue = calculationResult.costs.total;
                     const initialValue = initialCalculationResult.costs.total;
                     const diff = currentValue - initialValue;
-                    // فقط اگر تفاوت قابل توجه باشد نمایش بده (بیش از 0.1)
                     if (Math.abs(diff) > 0.1 && initialValue > 0) {
                       const percentChange = (diff / initialValue) * 100;
                       return (
-                        <div className="mt-2 flex items-center gap-2 text-xs">
+                        <div className="mt-1 flex items-center gap-1 text-[9px]">
                           <span className={`font-medium ${diff > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
-                            {diff > 0 ? '+' : ''}{diff.toLocaleString('en-US', { maximumFractionDigits: 1 })}
+                            {diff > 0 ? '+' : ''}{diff.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                           </span>
                           <span className={`font-medium ${diff > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
                             ({percentChange > 0 ? '+' : ''}{percentChange.toFixed(1)}%)
@@ -526,43 +523,38 @@ export default function Home() {
                     return null;
                   })()}
                 </div>
-              </div>
 
-              <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white to-slate-50 p-6 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-                <div className="absolute top-0 right-0 h-20 w-20 rounded-bl-full bg-gradient-to-br from-blue-400/20 to-transparent"></div>
-                <div className="relative">
-                  <div className="mb-3 flex items-center gap-2">
-                    <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/30">
-                      <svg className="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-white to-slate-50 p-3 shadow-md transition-all duration-200 hover:shadow-lg dark:from-slate-800 dark:to-slate-900">
+                  <div className="mb-1.5 flex items-center gap-1.5">
+                    <div className="rounded bg-blue-100 p-1 dark:bg-blue-900/30">
+                      <svg className="h-3 w-3 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h3 className="text-sm font-normal text-slate-600 dark:text-slate-400">
+                    <h3 className="text-xs font-medium text-slate-600 dark:text-slate-400">
                       سود خالص
                     </h3>
                   </div>
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex items-baseline gap-1">
                     <p
-                      className={`text-3xl font-bold transition-colors ${calculationResult.profit.net >= 0
+                      className={`text-lg font-bold transition-colors ${calculationResult.profit.net >= 0
                           ? 'text-green-600 dark:text-green-400'
                           : 'text-red-600 dark:text-red-400'
                         }`}
                     >
                       {Math.round(calculationResult.profit.net).toLocaleString('en-US')}
                     </p>
-                    <span className="text-sm font-medium text-slate-500">
+                    <span className="text-[10px] font-medium text-slate-500">
                       ({calculationResult.revenue.total > 0
                         ? ((calculationResult.profit.net / calculationResult.revenue.total) * 100).toFixed(1)
                         : '0.0'}%)
                     </span>
                   </div>
-                  <p className="mt-2 text-xs font-medium text-slate-500">میلیون تومان</p>
-                  {/* نمایش تغییر نسبت به مقدار پیش‌فرض */}
+                  <p className="mt-0.5 text-[9px] font-medium text-slate-500">میلیون تومان</p>
                   {(() => {
                     const currentValue = calculationResult.profit.net;
                     const initialValue = initialCalculationResult.profit.net;
                     const diff = currentValue - initialValue;
-                    // فقط اگر تفاوت قابل توجه باشد نمایش بده (بیش از 0.1)
                     if (Math.abs(diff) > 0.1) {
                       let percentChange = 0;
                       if (initialValue !== 0) {
@@ -571,9 +563,9 @@ export default function Home() {
                         percentChange = diff > 0 ? 100 : -100;
                       }
                       return (
-                        <div className="mt-2 flex items-center gap-2 text-xs">
+                        <div className="mt-1 flex items-center gap-1 text-[9px]">
                           <span className={`font-medium ${diff > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                            {diff > 0 ? '+' : ''}{diff.toLocaleString('en-US', { maximumFractionDigits: 1 })}
+                            {diff > 0 ? '+' : ''}{diff.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                           </span>
                           <span className={`font-medium ${diff > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                             ({percentChange > 0 ? '+' : ''}{percentChange.toFixed(1)}%)
@@ -585,187 +577,172 @@ export default function Home() {
                   })()}
                 </div>
               </div>
-            </div>
 
-            {/* Detailed Breakdown */}
-            <div className="rounded-xl bg-gradient-to-br from-white to-slate-50 p-5 shadow-xl transition-shadow duration-300 hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-              <div className="mb-4 flex items-center gap-2.5">
-                <div className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-1.5">
-                  <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
+              {/* Compact Detailed Breakdown */}
+              <div className="rounded-lg bg-gradient-to-br from-white to-slate-50 p-2 shadow-md transition-shadow duration-200 dark:from-slate-800 dark:to-slate-900">
+                <div className="mb-2 flex items-center gap-1.5">
+                  <div className="rounded bg-gradient-to-br from-blue-500 to-purple-600 p-1">
+                    <svg className="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xs font-medium text-slate-800 dark:text-slate-100">
+                    جزئیات: <span className="text-blue-600 dark:text-blue-400">{selectedCapacity.toLocaleString('en-US')} تن</span>
+                  </h2>
                 </div>
-                <h2 className="text-lg font-normal text-slate-800 dark:text-slate-100">
-                  جزئیات محاسبات برای ظرفیت <span className="text-blue-600 dark:text-blue-400">{selectedCapacity.toLocaleString('en-US')} تن</span>
-                </h2>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <h3 className="mb-2 text-base font-normal text-green-600 dark:text-green-400">
-                    درآمدها (میلیون تومان)
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">فروش کلوخه:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium">
-                          {Math.round(calculationResult.revenue.klohe).toLocaleString('en-US')}
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          ({calculationResult.revenue.total > 0
-                            ? ((calculationResult.revenue.klohe / calculationResult.revenue.total) * 100).toFixed(1)
-                            : '0.0'}%)
-                        </span>
+                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                  <div>
+                    <h3 className="mb-1 text-[10px] font-medium text-green-600 dark:text-green-400">
+                      درآمدها
+                    </h3>
+                    <div className="space-y-0.5">
+                      <div className="flex justify-between items-center rounded bg-green-50/50 px-1.5 py-0.5 dark:bg-green-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">کلوخه:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
+                            {Math.round(calculationResult.revenue.klohe).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-[8px] text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.revenue.klohe / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">فروش خاکه:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium">
-                          {Math.round(calculationResult.revenue.khake).toLocaleString('en-US')}
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          ({calculationResult.revenue.total > 0
-                            ? ((calculationResult.revenue.khake / calculationResult.revenue.total) * 100).toFixed(1)
-                            : '0.0'}%)
-                        </span>
+                      <div className="flex justify-between items-center rounded bg-green-50/50 px-1.5 py-0.5 dark:bg-green-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">خاکه:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
+                            {Math.round(calculationResult.revenue.khake).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-[8px] text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.revenue.khake / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-between items-center rounded-lg bg-green-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-green-100/50 dark:bg-green-900/10 dark:hover:bg-green-900/20">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">فروش جیگ و میز:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium">
-                          {Math.round(calculationResult.revenue.jigMiz).toLocaleString('en-US')}
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          ({calculationResult.revenue.total > 0
-                            ? ((calculationResult.revenue.jigMiz / calculationResult.revenue.total) * 100).toFixed(1)
-                            : '0.0'}%)
-                        </span>
+                      <div className="flex justify-between items-center rounded bg-green-50/50 px-1.5 py-0.5 dark:bg-green-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">جیگ و میز:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
+                            {Math.round(calculationResult.revenue.jigMiz).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-[8px] text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.revenue.jigMiz / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="mt-3 flex justify-between items-center rounded-lg border-2 border-green-200 bg-green-50 px-3 py-2 font-bold dark:border-green-800 dark:bg-green-900/20">
-                      <span className="text-sm text-green-700 dark:text-green-300">جمع درآمدها:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-green-600 dark:text-green-400">
+                      <div className="mt-1 flex justify-between items-center rounded border border-green-200 bg-green-50 px-1.5 py-0.5 dark:border-green-800 dark:bg-green-900/20">
+                        <span className="text-[9px] font-bold text-green-700 dark:text-green-300">جمع:</span>
+                        <span className="text-[9px] font-bold text-green-600 dark:text-green-400">
                           {Math.round(calculationResult.revenue.total).toLocaleString('en-US')}
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          (100.0%)
                         </span>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div>
-                  <h3 className="mb-2 text-base font-normal text-red-600 dark:text-red-400">
-                    هزینه‌ها (میلیون تومان)
-                  </h3>
-                  <div className="space-y-2">
-                    {/* هزینه‌های عملیاتی */}
-                    <div className="mb-1.5 text-xs font-medium text-slate-600 dark:text-slate-400">
-                      هزینه‌های عملیاتی:
-                    </div>
-                    <div className="mr-3 space-y-2">
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">هزینه ثابت:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                  <div>
+                    <h3 className="mb-1 text-[10px] font-medium text-red-600 dark:text-red-400">
+                      هزینه‌ها
+                    </h3>
+                    <div className="space-y-0.5">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">ثابت:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.fixed).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.fixed / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">هزینه متغیر:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">متغیر:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.variable).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.variable / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">بهای کک:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">کک:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.coke).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.coke / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">بهای کرومیت:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">کرومیت:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.chromite).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.chromite / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">هزینه برق:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">برق:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.electricity).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.electricity / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">سایر افزودنی‌ها:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">افزودنی‌ها:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.otherAdditives).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.otherAdditives / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">سایر هزینه‌ها:</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-medium">
+                      <div className="flex justify-between items-center rounded bg-red-50/50 px-1.5 py-0.5 dark:bg-red-900/10">
+                        <span className="text-[9px] font-medium text-slate-700 dark:text-slate-300">سایر:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-medium">
                             {Math.round(calculationResult.costs.otherCosts).toLocaleString('en-US')}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-[8px] text-slate-500">
                             ({calculationResult.revenue.total > 0
                               ? ((calculationResult.costs.otherCosts / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
                       </div>
-                    </div>
-
-                    {/* جمع هزینه‌های عملیاتی */}
-                    <div className="mt-3 flex justify-between items-center rounded-lg border-2 border-orange-200 bg-orange-50 px-3 py-2 font-semibold dark:border-orange-800 dark:bg-orange-900/20">
-                      <span className="text-sm text-orange-700 dark:text-orange-300">جمع هزینه‌های عملیاتی:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-orange-600 dark:text-orange-400">
+                      <div className="mt-1 flex justify-between items-center rounded border border-orange-200 bg-orange-50 px-1.5 py-0.5 dark:border-orange-800 dark:bg-orange-900/20">
+                        <span className="text-[9px] font-bold text-orange-700 dark:text-orange-300">عملیاتی:</span>
+                        <span className="text-[9px] font-bold text-orange-600 dark:text-orange-400">
                           {Math.round(calculationResult.costs.fixed +
                             calculationResult.costs.variable +
                             calculationResult.costs.coke +
@@ -774,158 +751,113 @@ export default function Home() {
                             calculationResult.costs.otherAdditives +
                             calculationResult.costs.otherCosts).toLocaleString('en-US')}
                         </span>
-                        <span className="text-xs text-slate-500">
-                          ({calculationResult.revenue.total > 0
-                            ? (((calculationResult.costs.fixed +
-                              calculationResult.costs.variable +
-                              calculationResult.costs.coke +
-                              calculationResult.costs.chromite +
-                              calculationResult.costs.electricity +
-                              calculationResult.costs.otherAdditives +
-                              calculationResult.costs.otherCosts) / calculationResult.revenue.total) * 100).toFixed(1)
-                            : '0.0'}%)
-                        </span>
                       </div>
-                    </div>
-
-                    {/* حقوق دولتی */}
-                    <div className="mt-3 flex justify-between items-center rounded-lg border-2 border-blue-200 bg-blue-50 px-3 py-2 dark:border-blue-800 dark:bg-blue-900/20">
-                      <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">حقوق دولتی:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                      <div className="flex justify-between items-center rounded border border-blue-200 bg-blue-50 px-1.5 py-0.5 dark:border-blue-800 dark:bg-blue-900/20">
+                        <span className="text-[9px] font-bold text-blue-700 dark:text-blue-300">دولتی:</span>
+                        <span className="text-[9px] font-bold text-blue-600 dark:text-blue-400">
                           {Math.round(calculationResult.costs.governmentFee).toLocaleString('en-US')}
                         </span>
-                        <span className="text-sm text-slate-500">
-                          ({calculationResult.revenue.total > 0
-                            ? ((calculationResult.costs.governmentFee / calculationResult.revenue.total) * 100).toFixed(1)
-                            : '0.0'}%)
-                        </span>
                       </div>
-                    </div>
-
-                    {/* جمع کل هزینه‌ها */}
-                    <div className="mt-3 flex justify-between items-center rounded-lg border-2 border-red-300 bg-red-50 px-3 py-2 font-bold dark:border-red-700 dark:bg-red-900/20">
-                      <span className="text-sm text-red-700 dark:text-red-300">جمع کل هزینه‌ها:</span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-red-600 dark:text-red-400">
+                      <div className="flex justify-between items-center rounded border border-red-300 bg-red-50 px-1.5 py-0.5 dark:border-red-700 dark:bg-red-900/20">
+                        <span className="text-[9px] font-bold text-red-700 dark:text-red-300">جمع:</span>
+                        <span className="text-[9px] font-bold text-red-600 dark:text-red-400">
                           {Math.round(calculationResult.costs.total).toLocaleString('en-US')}
                         </span>
-                        <span className="text-xs text-slate-500">
-                          ({calculationResult.revenue.total > 0
-                            ? ((calculationResult.costs.total / calculationResult.revenue.total) * 100).toFixed(1)
-                            : '0.0'}%)
-                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="mx-auto grid max-w-2xl gap-4 md:grid-cols-2">
-              <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-                <div className="mb-3 flex items-center gap-2">
-                  <div className="rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 p-1.5">
-                    <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-base font-normal text-slate-800 dark:text-slate-100">
-                    نمودار سهم از فروش - درآمدها
-                  </h2>
-                </div>
-                <RevenuePieChart revenue={calculationResult.revenue} />
-              </div>
 
-              <div className="group rounded-xl bg-gradient-to-br from-white to-slate-50 p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:from-slate-800 dark:to-slate-900">
-                <div className="mb-3 flex items-center gap-2">
-                  <div className="rounded-lg bg-gradient-to-br from-red-400 to-pink-500 p-1.5">
-                    <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                    </svg>
+              {/* Compact Pie Charts */}
+              <div className="grid grid-cols-2 gap-2">
+                <div className="rounded-lg bg-gradient-to-br from-white to-slate-50 p-2 shadow-md dark:from-slate-800 dark:to-slate-900">
+                  <div className="mb-1 flex items-center gap-1">
+                    <div className="rounded bg-gradient-to-br from-green-400 to-emerald-500 p-0.5">
+                      <svg className="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-[9px] font-medium text-slate-800 dark:text-slate-100">
+                      نسبت به فروش درآمدها
+                    </h2>
                   </div>
-                  <h2 className="text-base font-normal text-slate-800 dark:text-slate-100">
-                    نمودار سهم از فروش - هزینه‌ها
-                  </h2>
+                  <RevenuePieChart revenue={calculationResult.revenue} />
                 </div>
-                <CostsPieChart
-                  costs={calculationResult.costs}
-                  revenueTotal={calculationResult.revenue.total}
+
+                <div className="rounded-lg bg-gradient-to-br from-white to-slate-50 p-2 shadow-md dark:from-slate-800 dark:to-slate-900">
+                  <div className="mb-1 flex items-center gap-1">
+                    <div className="rounded bg-gradient-to-br from-red-400 to-pink-500 p-0.5">
+                      <svg className="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-[9px] font-medium text-slate-800 dark:text-slate-100">
+                      نسبت به فروش هزینه‌ها
+                    </h2>
+                  </div>
+                  <CostsPieChart
+                    costs={calculationResult.costs}
+                    revenueTotal={calculationResult.revenue.total}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Sidebar with 9 Sliders */}
+            <div className="col-span-12 space-y-2 overflow-y-auto lg:col-span-3">
+              {/* Sliders in 2 columns */}
+              <div className="grid grid-cols-2 gap-2">
+                <ChromitePriceSlider
+                  chromitePrice={chromitePrice}
+                  initialChromitePrice={initialChromitePrice}
+                  onChromitePriceChange={handleChromitePriceChange}
+                />
+                <CokePriceSlider
+                  cokePrice={cokePrice}
+                  initialCokePrice={initialCokePrice}
+                  onCokePriceChange={handleCokePriceChange}
+                />
+                <KhakePriceSlider
+                  khakePrice={khakePrice}
+                  initialKhakePrice={initialKhakePrice}
+                  onKhakePriceChange={handleKhakePriceChange}
+                />
+                <JigMizPriceSlider
+                  jigMizPrice={jigMizPrice}
+                  initialJigMizPrice={initialJigMizPrice}
+                  onJigMizPriceChange={handleJigMizPriceChange}
+                />
+                <KhakePercentageSlider
+                  khakePercentage={khakePercentage}
+                  initialKhakePercentage={initialKhakePercentage}
+                  onKhakePercentageChange={handleKhakePercentageChange}
+                />
+                <JigMizProductionSlider
+                  jigMizProduction={jigMizProduction}
+                  initialJigMizProduction={initialJigMizProduction}
+                  onJigMizProductionChange={handleJigMizProductionChange}
+                />
+                <ChromiteConsumptionSlider
+                  chromiteConsumption={chromiteConsumption}
+                  initialChromiteConsumption={initialChromiteConsumption}
+                  onChromiteConsumptionChange={handleChromiteConsumptionChange}
+                />
+                <CokeConsumptionSlider
+                  cokeConsumption={cokeConsumption}
+                  initialCokeConsumption={initialCokeConsumption}
+                  onCokeConsumptionChange={handleCokeConsumptionChange}
                 />
               </div>
-            </div>
-          </div>
 
-          {/* Right Column: Sidebar with 8 Sliders */}
-          <div className="lg:sticky lg:top-8 lg:h-fit">
-            <div className="space-y-4">
-              {/* Title */}
-              {/* <div className="mb-4 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 p-4 dark:from-slate-800 dark:to-slate-700">
-                <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                  پارامترهای قیمت و مصرف
-                </h2>
-              </div> */}
-
-              {/* Sliders in 2 columns - 4 per column */}
-              <div className="grid grid-cols-2 gap-3">
-                {/* Column 1 */}
-                <div className="space-y-3">
-                  <ChromitePriceSlider
-                    chromitePrice={chromitePrice}
-                    initialChromitePrice={initialChromitePrice}
-                    onChromitePriceChange={handleChromitePriceChange}
-                  />
-                  <KhakePriceSlider
-                    khakePrice={khakePrice}
-                    initialKhakePrice={initialKhakePrice}
-                    onKhakePriceChange={handleKhakePriceChange}
-                  />
-                  <KhakePercentageSlider
-                    khakePercentage={khakePercentage}
-                    initialKhakePercentage={initialKhakePercentage}
-                    onKhakePercentageChange={handleKhakePercentageChange}
-                  />
-                  <ChromiteConsumptionSlider
-                    chromiteConsumption={chromiteConsumption}
-                    initialChromiteConsumption={initialChromiteConsumption}
-                    onChromiteConsumptionChange={handleChromiteConsumptionChange}
-                  />
-                </div>
-
-                {/* Column 2 */}
-                <div className="space-y-3">
-                  <CokePriceSlider
-                    cokePrice={cokePrice}
-                    initialCokePrice={initialCokePrice}
-                    onCokePriceChange={handleCokePriceChange}
-                  />
-                  <JigMizPriceSlider
-                    jigMizPrice={jigMizPrice}
-                    initialJigMizPrice={initialJigMizPrice}
-                    onJigMizPriceChange={handleJigMizPriceChange}
-                  />
-                  <JigMizProductionSlider
-                    jigMizProduction={jigMizProduction}
-                    initialJigMizProduction={initialJigMizProduction}
-                    onJigMizProductionChange={handleJigMizProductionChange}
-                  />
-                  <CokeConsumptionSlider
-                    cokeConsumption={cokeConsumption}
-                    initialCokeConsumption={initialCokeConsumption}
-                    onCokeConsumptionChange={handleCokeConsumptionChange}
-                  />
-                </div>
-              </div>
-
-              {/* Slider - قیمت دلار */}
-              <div className="mt-4">
-                <DollarPriceSlider
-                  dollarPrice={dollarPrice}
-                  initialDollarPrice={initialDollarPrice}
-                  onDollarPriceChange={handleDollarPriceChange}
-                />
-              </div>
+              {/* Dollar Price Slider */}
+              <DollarPriceSlider
+                dollarPrice={dollarPrice}
+                initialDollarPrice={initialDollarPrice}
+                onDollarPriceChange={handleDollarPriceChange}
+              />
             </div>
           </div>
         </div>
