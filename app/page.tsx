@@ -7,6 +7,14 @@ import FixedCostSlider from '@/components/FixedCostSlider';
 import VariableCostSlider from '@/components/VariableCostSlider';
 import ElectricityCostSlider from '@/components/ElectricityCostSlider';
 import DollarPriceSlider from '@/components/DollarPriceSlider';
+import ChromitePriceSlider from '@/components/ChromitePriceSlider';
+import CokePriceSlider from '@/components/CokePriceSlider';
+import KhakePriceSlider from '@/components/KhakePriceSlider';
+import JigMizPriceSlider from '@/components/JigMizPriceSlider';
+import KhakePercentageSlider from '@/components/KhakePercentageSlider';
+import JigMizProductionSlider from '@/components/JigMizProductionSlider';
+import ChromiteConsumptionSlider from '@/components/ChromiteConsumptionSlider';
+import CokeConsumptionSlider from '@/components/CokeConsumptionSlider';
 import RevenuePieChart from '@/components/RevenuePieChart';
 import CostsPieChart from '@/components/CostsPieChart';
 import { calculate, Assumptions } from '@/utils/calculations';
@@ -24,6 +32,22 @@ export default function Home() {
   const [initialElectricityCost, setInitialElectricityCost] = useState<number>(5);
   const [dollarPrice, setDollarPrice] = useState<number>(0.08);
   const [initialDollarPrice, setInitialDollarPrice] = useState<number>(0.08);
+  const [chromitePrice, setChromitePrice] = useState<number>(22);
+  const [initialChromitePrice, setInitialChromitePrice] = useState<number>(22);
+  const [cokePrice, setCokePrice] = useState<number>(20);
+  const [initialCokePrice, setInitialCokePrice] = useState<number>(20);
+  const [khakePrice, setKhakePrice] = useState<number>(90);
+  const [initialKhakePrice, setInitialKhakePrice] = useState<number>(90);
+  const [jigMizPrice, setJigMizPrice] = useState<number>(90);
+  const [initialJigMizPrice, setInitialJigMizPrice] = useState<number>(90);
+  const [khakePercentage, setKhakePercentage] = useState<number>(0.18);
+  const [initialKhakePercentage, setInitialKhakePercentage] = useState<number>(0.18);
+  const [jigMizProduction, setJigMizProduction] = useState<number>(150);
+  const [initialJigMizProduction, setInitialJigMizProduction] = useState<number>(150);
+  const [chromiteConsumption, setChromiteConsumption] = useState<number>(2.7);
+  const [initialChromiteConsumption, setInitialChromiteConsumption] = useState<number>(2.7);
+  const [cokeConsumption, setCokeConsumption] = useState<number>(0.6);
+  const [initialCokeConsumption, setInitialCokeConsumption] = useState<number>(0.6);
   const [loading, setLoading] = useState(true);
   const [calculationResult, setCalculationResult] = useState(
     calculate(2000, {})
@@ -43,6 +67,14 @@ export default function Home() {
         const currentVariableCost = data['هزینه متغیردر هر تن']?.value || 15;
         const currentElectricityCost = data['هزینه واحد برق بر تن']?.value || 5;
         const currentDollarPrice = data['قیمت دلار']?.value || 0.08;
+        const currentChromitePrice = data['قیمت کرومیت']?.value || 22;
+        const currentCokePrice = data['قیمت کک']?.value || 20;
+        const currentKhakePrice = data['قیمت خاکه']?.value || 90;
+        const currentJigMizPrice = data['قیمت فلز جیگ و میز']?.value || 90;
+        const currentKhakePercentage = data['درصد خاکه']?.value || 0.18;
+        const currentJigMizProduction = data['تولید فلز جیگ و میز']?.value || 150;
+        const currentChromiteConsumption = data['کرومیت مصرفی']?.value || 2.7;
+        const currentCokeConsumption = data['کک مصرفی']?.value || 0.6;
         setSelectedCapacity(currentCapacity);
         setInitialCapacity(currentCapacity);
         setFixedCost(currentFixedCost);
@@ -53,6 +85,22 @@ export default function Home() {
         setInitialElectricityCost(currentElectricityCost);
         setDollarPrice(currentDollarPrice);
         setInitialDollarPrice(currentDollarPrice);
+        setChromitePrice(currentChromitePrice);
+        setInitialChromitePrice(currentChromitePrice);
+        setCokePrice(currentCokePrice);
+        setInitialCokePrice(currentCokePrice);
+        setKhakePrice(currentKhakePrice);
+        setInitialKhakePrice(currentKhakePrice);
+        setJigMizPrice(currentJigMizPrice);
+        setInitialJigMizPrice(currentJigMizPrice);
+        setKhakePercentage(currentKhakePercentage);
+        setInitialKhakePercentage(currentKhakePercentage);
+        setJigMizProduction(currentJigMizProduction);
+        setInitialJigMizProduction(currentJigMizProduction);
+        setChromiteConsumption(currentChromiteConsumption);
+        setInitialChromiteConsumption(currentChromiteConsumption);
+        setCokeConsumption(currentCokeConsumption);
+        setInitialCokeConsumption(currentCokeConsumption);
         setCalculationResult(calculate(currentCapacity, data));
         setLoading(false);
       })
@@ -68,7 +116,7 @@ export default function Home() {
       [key]: { ...assumptions[key], value },
     };
     setAssumptions(updatedAssumptions);
-    // اگر هزینه‌ها تغییر کردند، state اسلایدرها را هم به‌روز کن
+    // اگر هزینه‌ها یا قیمت‌ها تغییر کردند، state اسلایدرها را هم به‌روز کن
     if (key === 'هزینه ثابت') {
       setFixedCost(value);
     } else if (key === 'هزینه متغیردر هر تن') {
@@ -77,6 +125,22 @@ export default function Home() {
       setElectricityCost(value);
     } else if (key === 'قیمت دلار') {
       setDollarPrice(value);
+    } else if (key === 'قیمت کرومیت') {
+      setChromitePrice(value);
+    } else if (key === 'قیمت کک') {
+      setCokePrice(value);
+    } else if (key === 'قیمت خاکه') {
+      setKhakePrice(value);
+    } else if (key === 'قیمت فلز جیگ و میز') {
+      setJigMizPrice(value);
+    } else if (key === 'درصد خاکه') {
+      setKhakePercentage(value);
+    } else if (key === 'تولید فلز جیگ و میز') {
+      setJigMizProduction(value);
+    } else if (key === 'کرومیت مصرفی') {
+      setChromiteConsumption(value);
+    } else if (key === 'کک مصرفی') {
+      setCokeConsumption(value);
     }
     // محاسبات را با assumptions به‌روز شده انجام بده
     setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
@@ -147,6 +211,126 @@ export default function Home() {
     setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
   };
 
+  const handleChromitePriceChange = (price: number) => {
+    setChromitePrice(price);
+    const updatedAssumptions = {
+      ...assumptions,
+      'قیمت کرومیت': { 
+        ...assumptions['قیمت کرومیت'], 
+        label: assumptions['قیمت کرومیت']?.label || 'قیمت کرومیت',
+        unit: assumptions['قیمت کرومیت']?.unit || '',
+        value: price 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleCokePriceChange = (price: number) => {
+    setCokePrice(price);
+    const updatedAssumptions = {
+      ...assumptions,
+      'قیمت کک': { 
+        ...assumptions['قیمت کک'], 
+        label: assumptions['قیمت کک']?.label || 'قیمت کک',
+        unit: assumptions['قیمت کک']?.unit || '',
+        value: price 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleKhakePriceChange = (price: number) => {
+    setKhakePrice(price);
+    const updatedAssumptions = {
+      ...assumptions,
+      'قیمت خاکه': { 
+        ...assumptions['قیمت خاکه'], 
+        label: assumptions['قیمت خاکه']?.label || 'قیمت خاکه',
+        unit: assumptions['قیمت خاکه']?.unit || '',
+        value: price 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleJigMizPriceChange = (price: number) => {
+    setJigMizPrice(price);
+    const updatedAssumptions = {
+      ...assumptions,
+      'قیمت فلز جیگ و میز': { 
+        ...assumptions['قیمت فلز جیگ و میز'], 
+        label: assumptions['قیمت فلز جیگ و میز']?.label || 'قیمت فلز جیگ و میز',
+        unit: assumptions['قیمت فلز جیگ و میز']?.unit || '',
+        value: price 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleKhakePercentageChange = (percentage: number) => {
+    setKhakePercentage(percentage);
+    const updatedAssumptions = {
+      ...assumptions,
+      'درصد خاکه': { 
+        ...assumptions['درصد خاکه'], 
+        label: assumptions['درصد خاکه']?.label || 'درصد خاکه',
+        unit: assumptions['درصد خاکه']?.unit || '',
+        value: percentage 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleJigMizProductionChange = (production: number) => {
+    setJigMizProduction(production);
+    const updatedAssumptions = {
+      ...assumptions,
+      'تولید فلز جیگ و میز': { 
+        ...assumptions['تولید فلز جیگ و میز'], 
+        label: assumptions['تولید فلز جیگ و میز']?.label || 'تولید فلز جیگ و میز',
+        unit: assumptions['تولید فلز جیگ و میز']?.unit || '',
+        value: production 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleChromiteConsumptionChange = (consumption: number) => {
+    setChromiteConsumption(consumption);
+    const updatedAssumptions = {
+      ...assumptions,
+      'کرومیت مصرفی': { 
+        ...assumptions['کرومیت مصرفی'], 
+        label: assumptions['کرومیت مصرفی']?.label || 'کرومیت مصرفی',
+        unit: assumptions['کرومیت مصرفی']?.unit || '',
+        value: consumption 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
+  const handleCokeConsumptionChange = (consumption: number) => {
+    setCokeConsumption(consumption);
+    const updatedAssumptions = {
+      ...assumptions,
+      'کک مصرفی': { 
+        ...assumptions['کک مصرفی'], 
+        label: assumptions['کک مصرفی']?.label || 'کک مصرفی',
+        unit: assumptions['کک مصرفی']?.unit || '',
+        value: consumption 
+      },
+    };
+    setAssumptions(updatedAssumptions);
+    setCalculationResult(calculate(selectedCapacity, updatedAssumptions));
+  };
+
   const handleReset = () => {
     const resetAssumptions = JSON.parse(JSON.stringify(initialAssumptions)); // Deep copy
     setAssumptions(resetAssumptions);
@@ -155,6 +339,14 @@ export default function Home() {
     setVariableCost(initialVariableCost);
     setElectricityCost(initialElectricityCost);
     setDollarPrice(initialDollarPrice);
+    setChromitePrice(initialChromitePrice);
+    setCokePrice(initialCokePrice);
+    setKhakePrice(initialKhakePrice);
+    setJigMizPrice(initialJigMizPrice);
+    setKhakePercentage(initialKhakePercentage);
+    setJigMizProduction(initialJigMizProduction);
+    setChromiteConsumption(initialChromiteConsumption);
+    setCokeConsumption(initialCokeConsumption);
     setCalculationResult(calculate(initialCapacity, resetAssumptions));
   };
 
@@ -230,6 +422,54 @@ export default function Home() {
                 dollarPrice={dollarPrice}
                 initialDollarPrice={initialDollarPrice}
                 onDollarPriceChange={handleDollarPriceChange}
+              />
+            </div>
+
+            {/* Sliders - قیمت کرومیت، کک، خاکه و جیگ و میز */}
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+              <ChromitePriceSlider
+                chromitePrice={chromitePrice}
+                initialChromitePrice={initialChromitePrice}
+                onChromitePriceChange={handleChromitePriceChange}
+              />
+              <CokePriceSlider
+                cokePrice={cokePrice}
+                initialCokePrice={initialCokePrice}
+                onCokePriceChange={handleCokePriceChange}
+              />
+              <KhakePriceSlider
+                khakePrice={khakePrice}
+                initialKhakePrice={initialKhakePrice}
+                onKhakePriceChange={handleKhakePriceChange}
+              />
+              <JigMizPriceSlider
+                jigMizPrice={jigMizPrice}
+                initialJigMizPrice={initialJigMizPrice}
+                onJigMizPriceChange={handleJigMizPriceChange}
+              />
+            </div>
+
+            {/* Sliders - درصد خاکه، تولید فلز جیگ و میز، کرومیت مصرفی، کک مصرفی */}
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+              <KhakePercentageSlider
+                khakePercentage={khakePercentage}
+                initialKhakePercentage={initialKhakePercentage}
+                onKhakePercentageChange={handleKhakePercentageChange}
+              />
+              <JigMizProductionSlider
+                jigMizProduction={jigMizProduction}
+                initialJigMizProduction={initialJigMizProduction}
+                onJigMizProductionChange={handleJigMizProductionChange}
+              />
+              <ChromiteConsumptionSlider
+                chromiteConsumption={chromiteConsumption}
+                initialChromiteConsumption={initialChromiteConsumption}
+                onChromiteConsumptionChange={handleChromiteConsumptionChange}
+              />
+              <CokeConsumptionSlider
+                cokeConsumption={cokeConsumption}
+                initialCokeConsumption={initialCokeConsumption}
+                onCokeConsumptionChange={handleCokeConsumptionChange}
               />
             </div>
 

@@ -122,17 +122,7 @@ export default function AssumptionsPanel({
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5">
-        {/* فرضیات قیمت */}
-        <div className="space-y-1.5 rounded-lg bg-slate-50/50 p-2.5 dark:bg-slate-800/50">
-          <h3 className="text-xs font-semibold text-green-600 dark:text-green-400 mb-1.5">
-            قیمت‌ها(میلیون تومان)
-          </h3>
-          {priceAssumptions.map((key) =>
-            localAssumptions[key] ? renderInput(key, localAssumptions[key]) : null
-          )}
-        </div>
-
+      <div>
         {/* سایر فرضیات */}
         <div className="space-y-1.5 rounded-lg bg-slate-50/50 p-2.5 dark:bg-slate-800/50">
           <h3 className="text-xs font-semibold text-purple-600 dark:text-purple-400 mb-1.5">
