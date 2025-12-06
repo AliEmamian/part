@@ -24,7 +24,9 @@ export interface CalculationResult {
     chromite: number; // بهای کرومیت مصرفی
     electricity: number; // هزینه برق مصرفی
     governmentFee: number; // حقوق دولتی
-    other: number; // سایر هزینه‌ها
+    otherAdditives: number; // سایر افزودنی‌ها
+    otherCosts: number; // سایر هزینه‌ها
+    other: number; // سایر هزینه‌ها (برای سازگاری با کد قبلی)
     total: number; // جمع هزینه‌ها
   };
   profit: {
@@ -126,7 +128,7 @@ export function calculate(
   // سود خالص = درآمد کل - هزینه کل
   const netProfit = totalRevenue - totalCosts;
 
-  return {
+  const result: CalculationResult = {
     revenue: {
       klohe: kloheRevenue,
       khake: khakeRevenue,
@@ -140,7 +142,9 @@ export function calculate(
       chromite: chromiteCost,
       electricity: electricityCost,
       governmentFee: governmentFee,
-      other: otherCostsTotal + additivesCost,
+      otherAdditives: additivesCost,
+      otherCosts: otherCostsTotal,
+      other: otherCostsTotal + additivesCost, // برای سازگاری با کد قبلی
       total: totalCosts,
     },
     profit: {
@@ -148,5 +152,6 @@ export function calculate(
       net: netProfit,
     },
   };
+  return result;
 }
 

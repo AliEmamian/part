@@ -16,7 +16,7 @@ import ChromiteConsumptionSlider from '@/components/ChromiteConsumptionSlider';
 import CokeConsumptionSlider from '@/components/CokeConsumptionSlider';
 import RevenuePieChart from '@/components/RevenuePieChart';
 import CostsPieChart from '@/components/CostsPieChart';
-import { calculate, Assumptions } from '@/utils/calculations';
+import { calculate, Assumptions, CalculationResult } from '@/utils/calculations';
 
 export default function Home() {
   const [assumptions, setAssumptions] = useState<Assumptions>({});
@@ -48,12 +48,9 @@ export default function Home() {
   const [cokeConsumption, setCokeConsumption] = useState<number>(0.6);
   const [initialCokeConsumption, setInitialCokeConsumption] = useState<number>(0.6);
   const [loading, setLoading] = useState(true);
-  const [calculationResult, setCalculationResult] = useState(
-    calculate(2000, {})
-  );
-  const [initialCalculationResult, setInitialCalculationResult] = useState(
-    calculate(2000, {})
-  );
+  const initialCalcResult: CalculationResult = calculate(2000, {});
+  const [calculationResult, setCalculationResult] = useState<CalculationResult>(initialCalcResult);
+  const [initialCalculationResult, setInitialCalculationResult] = useState<CalculationResult>(initialCalcResult);
 
   useEffect(() => {
     // بارگذاری فرضیات
@@ -737,14 +734,27 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
-                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">سایر هزینه‌ها:</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">سایر افزودنی‌ها:</span>
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-medium">
-                            {Math.round(calculationResult.costs.other).toLocaleString('en-US')}
+                            {Math.round(calculationResult.costs.otherAdditives).toLocaleString('en-US')}
                           </span>
                           <span className="text-xs text-slate-500">
                             ({calculationResult.revenue.total > 0
-                              ? ((calculationResult.costs.other / calculationResult.revenue.total) * 100).toFixed(1)
+                              ? ((calculationResult.costs.otherAdditives / calculationResult.revenue.total) * 100).toFixed(1)
+                              : '0.0'}%)
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center rounded-lg bg-red-50/50 px-2.5 py-1.5 transition-colors duration-200 hover:bg-red-100/50 dark:bg-red-900/10 dark:hover:bg-red-900/20">
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">سایر هزینه‌ها:</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-medium">
+                            {Math.round(calculationResult.costs.otherCosts).toLocaleString('en-US')}
+                          </span>
+                          <span className="text-xs text-slate-500">
+                            ({calculationResult.revenue.total > 0
+                              ? ((calculationResult.costs.otherCosts / calculationResult.revenue.total) * 100).toFixed(1)
                               : '0.0'}%)
                           </span>
                         </div>
@@ -761,7 +771,8 @@ export default function Home() {
                             calculationResult.costs.coke +
                             calculationResult.costs.chromite +
                             calculationResult.costs.electricity +
-                            calculationResult.costs.other).toLocaleString('en-US')}
+                            calculationResult.costs.otherAdditives +
+                            calculationResult.costs.otherCosts).toLocaleString('en-US')}
                         </span>
                         <span className="text-xs text-slate-500">
                           ({calculationResult.revenue.total > 0
@@ -770,7 +781,8 @@ export default function Home() {
                               calculationResult.costs.coke +
                               calculationResult.costs.chromite +
                               calculationResult.costs.electricity +
-                              calculationResult.costs.other) / calculationResult.revenue.total) * 100).toFixed(1)
+                              calculationResult.costs.otherAdditives +
+                              calculationResult.costs.otherCosts) / calculationResult.revenue.total) * 100).toFixed(1)
                             : '0.0'}%)
                         </span>
                       </div>
