@@ -24,8 +24,8 @@ export default function CokeConsumptionSlider({
       {/* Header */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-500/10 dark:bg-gray-400/10">
-            <svg className="h-4 w-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/10 dark:bg-amber-400/10">
+            <svg className="h-4 w-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
@@ -62,7 +62,7 @@ export default function CokeConsumptionSlider({
         
         {/* Filled track */}
         <div
-          className="absolute top-0 right-0 h-1.5 rounded-full bg-gradient-to-l from-gray-500 to-gray-600 transition-all duration-200"
+          className="absolute top-0 right-0 h-1.5 rounded-full bg-gradient-to-l from-amber-500 to-amber-600 transition-all duration-200"
           style={{ width: `${percentage}%` }}
         />
         
@@ -88,7 +88,7 @@ export default function CokeConsumptionSlider({
           value={cokeConsumption}
           onChange={(e) => onCokeConsumptionChange(Number(e.target.value))}
           step={0.1}
-          className="absolute top-0 h-1.5 w-full cursor-pointer appearance-none bg-transparent [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-500 [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:hover:scale-125 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-gray-500 [&::-moz-range-thumb]:shadow-md"
+          className="absolute top-0 h-1.5 w-full cursor-pointer appearance-none bg-transparent [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-amber-500 [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:hover:scale-125 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-amber-500 [&::-moz-range-thumb]:shadow-md"
           style={{ direction: 'rtl' }}
         />
       </div>
